@@ -9,7 +9,19 @@
       "mcp__usps__get_packages",
       "mcp__usps__get_mail_piece_image",
       "WebFetch(domain:api.weather.gov)",
-      "WebFetch(domain:weather.com)"
+      "WebFetch(domain:weather.com)",
+      "Bash(find C:/Users/jrols/.claude -type f -name *.py)",
+      "Bash(find C:/code/github/jrolstad -type f -name *.py)",
+      "Bash(find C:/code -type f \\\\\\(-name *fastmcp* -o -name *mcp* \\\\\\))",
+      "Bash(find C:/code -type f -name *server* -path */mcp/*)",
+      "Bash(find C:/code -path *mcp/server/fastmcp* -name *.py)",
+      "Bash(find C:/code/github/jrolstad/rolstad-home-skills -type f -name *.py)",
+      "Bash(grep -r \"FastMCP\\\\|banner\\\\|header\" C:/code/github/jrolstad --include=*.py)",
+      "Bash(python3:*)",
+      "Bash(pip show:*)",
+      "Bash(find C:UsersjrolsAppDataLocalPackagesPythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0LocalCachelocal-packagesPython312site-packages -name *.md -o -name *.txt)",
+      "Bash(grep -r \"Fast MCP\\\\|fastmcp\\\\|╔═\\\\|Fast\\\\|banner\" C:UsersjrolsAppDataLocalPackagesPythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0LocalCachelocal-packagesPython312site-packagesfastmcp --include=*.py)",
+      "Bash(grep -r \"show_banner\\\\|banner\" C:UsersjrolsAppDataLocalPackagesPythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0LocalCachelocal-packagesPython312site-packagesfastmcpserver --include=*.py)"
     ]
   }
 }

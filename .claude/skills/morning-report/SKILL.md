@@ -31,11 +31,14 @@ Also fetch recent transactions (last 24 hours) from both banks, and fetch images
 Output a structured report. For finances, only show the primary checking accounts (BECU: the joint checking account; Heritage Bank NW: the main checking account). Use the most recent transaction date from fetched transactions to populate the Last Transaction column. For mail, use the same table format as the mail-check skill, reading recipient and description from each piece's image.
 
 ```
-## Good Morning — [Day, Date]
+----------------------------------------------------------------------------
+THE MORNING REPORT
+ [Day, Date]
+----------------------------------------------------------------------------
 
----
-## 💳 Finance Check
----
+--------------------------------------
+💳 Finance Check
+--------------------------------------
 
 | Account | Balance | Last Transaction |
 |---------|---------|-----------------|
@@ -44,9 +47,9 @@ Output a structured report. For finances, only show the primary checking account
 
 **Recent activity (last 24h):** X transactions — [summary of notable items, or "None" if quiet]
 
----
-## 📬 Mail Check
----
+--------------------------------------
+📬 Mail Check
+--------------------------------------
 
 Group mail by USPS account. For each account that was checked, show a table — even if no mail was found in the last 3 days (show "No mail in the last 3 days" below the account name in that case).
 
@@ -62,17 +65,17 @@ No mail in the last 3 days.
 **Account C**
 No mail in the last 3 days.
 
----
-## 📦 Packages
----
+--------------------------------------
+📦 Packages
+--------------------------------------
 
 | Shipper | Status | Expected |
 |---------|--------|---------|
 | Shopify | Expected Delivery | Mar 30 |
 
----
-## 🌤️ Weather — Brier, WA
----
+--------------------------------------
+🌤️ Weather — Brier, WA
+--------------------------------------
 
 Use the same output format as the `/weather-check` skill: 3-day forecast table and forecast discussion summary.
 
@@ -86,6 +89,7 @@ Would you like me to:
 2. Show full transaction details for an account
 3. Show mail piece images for recent mail
 4. Get tracking details for a specific package
+5. Show more detailed weather information
 ```
 
 ## Notes
