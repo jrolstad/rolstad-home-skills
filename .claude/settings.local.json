@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__becu__get_accounts",
+      "mcp__heritagebanknw__get_accounts",
+      "mcp__becu__get_transactions",
+      "mcp__heritagebanknw__get_transactions",
+      "mcp__usps__get_mail_pieces",
+      "mcp__usps__get_packages",
+      "mcp__usps__get_mail_piece_image",
+      "WebFetch(domain:api.weather.gov)",
+      "WebFetch(domain:weather.com)"
+    ]
+  }
+}
