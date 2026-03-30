@@ -21,7 +21,11 @@
       "Bash(pip show:*)",
       "Bash(find C:UsersjrolsAppDataLocalPackagesPythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0LocalCachelocal-packagesPython312site-packages -name *.md -o -name *.txt)",
       "Bash(grep -r \"Fast MCP\\\\|fastmcp\\\\|╔═\\\\|Fast\\\\|banner\" C:UsersjrolsAppDataLocalPackagesPythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0LocalCachelocal-packagesPython312site-packagesfastmcp --include=*.py)",
-      "Bash(grep -r \"show_banner\\\\|banner\" C:UsersjrolsAppDataLocalPackagesPythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0LocalCachelocal-packagesPython312site-packagesfastmcpserver --include=*.py)"
+      "Bash(grep -r \"show_banner\\\\|banner\" C:UsersjrolsAppDataLocalPackagesPythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0LocalCachelocal-packagesPython312site-packagesfastmcpserver --include=*.py)",
+      "mcp__google-workspace__read_sheet_values",
+      "mcp__google-workspace__search_gmail_messages",
+      "mcp__google-workspace__get_gmail_messages_content_batch",
+      "mcp__google-workspace__get_events"
     ]
   }
 }
