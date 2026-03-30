@@ -16,3 +16,7 @@ This repository contains custom Claude Code skills for home use. Skills are stor
 - **becu** — BECU credit union accounts
 - **heritagebanknw** — Heritage Bank NW accounts
 - **usps** — USPS mail and package tracking
+
+## Personal Configuration
+
+Personal settings (email, spreadsheet IDs, etc.) are stored in `settings.md` (gitignored). See `settings.md` for placeholder values used by the skills.

@@ -25,7 +25,8 @@
       "mcp__google-workspace__read_sheet_values",
       "mcp__google-workspace__search_gmail_messages",
       "mcp__google-workspace__get_gmail_messages_content_batch",
-      "mcp__google-workspace__get_events"
+      "mcp__google-workspace__get_events",
+      "mcp__google-workspace__get_doc_content"
     ]
   }
 }

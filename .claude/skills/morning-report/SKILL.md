@@ -26,6 +26,7 @@ Simultaneously retrieve:
 - Check register balances via Google Sheets (`mcp__google-workspace__read_sheet_values`, `user_google_email: [google_email]`):
   - Primary joint checking: spreadsheet ID `[spreadsheet_id_1]`, range `I2`
   - Secondary checking: spreadsheet ID `[spreadsheet_id_2]`, range `I2`
+- Dinner meal plan for the next 7 days (`mcp__google-workspace__get_doc_content`, `user_google_email: [google_email]`, `document_id: [meal_plan_doc_id]`) — read the current week's tab, find today's date, and show meals from today through the next 7 days (spanning into the next week's section if needed)
 - Google Calendar events for the next 7 days (`mcp__google-workspace__get_events`, `user_google_email: [google_email]`, `calendar_id: primary`, `time_min`: today, `time_max`: 7 days from today, `max_results: 50`)
 - Gmail inbox (`user_google_email: [google_email]`):
   1. Search unread: `mcp__google-workspace__search_gmail_messages` with query `is:unread in:inbox`, `page_size: 20`
@@ -88,6 +89,18 @@ No mail in the last 3 days.
 **--------------------------------------**
 
 Use the same output format as the `/weather-check` skill: 3-day forecast table and forecast discussion summary.
+
+**--------------------------------------**
+**🍽️ Dinner This Week**
+**--------------------------------------**
+
+Show meals from today through the next 7 days. Use the most recent week section that covers today's date. If the week doesn't have enough days remaining, continue into the next week's section. Skip days with no meal listed.
+
+| Day | Meal |
+|-----|------|
+| Sun Mar 29 | Salad |
+| Mon Mar 30 | Shrimp Tacos |
+| Tue Mar 31 | Burgers, Fries |
 
 **--------------------------------------**
 **📧 Gmail Inbox**
