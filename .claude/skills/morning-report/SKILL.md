@@ -53,7 +53,7 @@ Simultaneously retrieve:
           if line: print(line)
   ```
   This preserves linked recipe names as their display text. Find today's date, and show meals from today through the next 7 days (spanning into the next week's section if needed).
-- Google Calendar events for the next 7 days (`mcp__google-workspace__get_events`, `user_google_email: [google_email]`, `calendar_id: primary`, `time_min`: today, `time_max`: 7 days from today, `max_results: 50`)
+- Google Calendar events for the next 7 days (`mcp__google-workspace__get_events`, `user_google_email: [google_email]`, `calendar_id: primary`, `time_min`: today, `time_max`: 7 days from today, `max_results: 50`, `detailed: true`) — detailed mode is required to get the organizer field for Vrbas categorization
 - Gmail inbox (`user_google_email: [google_email]`):
   1. Search unread: `mcp__google-workspace__search_gmail_messages` with query `is:unread in:inbox`, `page_size: 20`
   2. Search recent read: `mcp__google-workspace__search_gmail_messages` with query `is:read in:inbox`, `page_size: 10`
@@ -148,14 +148,22 @@ Group all messages (unread and read) by theme. Mark unread messages with **UNREA
 **📅 Calendar — Next 7 Days**
 **--------------------------------------**
 
-Group events by theme. Common themes: Health & Medical, Kids & Family, Home, Work & Meetings, Reminders & Chores, Other. Only show themes that have events. Within each theme, sort by date/time ascending and include the day. Bold the entire line for events occurring today.
+Group events by theme. Common themes: Health & Medical, Kids & Family, Home, Work & Meetings, Reminders & Chores, Vrbas, Other. Only show themes that have events. Within each theme, sort by date/time ascending and include the day. Bold the entire line for events occurring today.
+
+**Vrbas rule:** Any event where the organizer is `etvrbas@gmail.com` must be placed in the **Vrbas** theme regardless of its content. To determine the organizer, fetch event details with `detailed: true`.
+
+**Recurring event grouping:** Events with the same name that recur within the 7-day window should be collapsed into a single line listing all dates. Example: `Mon Mar 30, Wed Apr 1, Fri Apr 3 — Kenzie Swim — 6:00–7:00 PM`.
 
 **Work & Meetings**
-- **Mon Mar 30 — Team Standup — 9:00–9:30 AM**
-- Tue Mar 31 — 1:1 with Manager — 2:00–2:30 PM
+| Day(s) | Event | Time |
+|--------|-------|------|
+| **Mon Mar 30** | **Team Standup** | **9:00–9:30 AM** |
+| Tue Mar 31 | 1:1 with Manager | 2:00–2:30 PM |
 
 **Home**
-- Wed Apr 1 — 🧼 Cleaning Day (all day)
+| Day(s) | Event | Time |
+|--------|-------|------|
+| Wed Apr 1 | 🧼 Cleaning Day | all day |
 
 ```
 
