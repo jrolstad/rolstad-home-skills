@@ -21,7 +21,7 @@ Simultaneously retrieve:
 - BECU accounts and balances (`mcp__becu__get_accounts`, `mcp__becu__get_balance`)
 - Heritage Bank NW accounts and balances (`mcp__heritagebanknw__get_accounts`, `mcp__heritagebanknw__get_balance`)
 - USPS mail pieces (`mcp__usps__get_mail_pieces`) — filter to last 3 days
-- USPS packages (`mcp__usps__get_packages`)
+- USPS packages (`mcp__usps__get_packages`) — only show packages with an estimated delivery date on or after today, or with a non-delivered status. Filter out packages that have already been delivered.
 - Weather forecast: follow the same steps as the `/weather-check` skill
 - Check register balances via Google Sheets (`mcp__google-workspace__read_sheet_values`, `user_google_email: [google_email]`):
   - Primary joint checking: spreadsheet ID `[spreadsheet_id_1]`, range `I2`
