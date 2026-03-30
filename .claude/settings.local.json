@@ -30,7 +30,8 @@
       "mcp__canvas-mtgibbs__get_missing_assignments",
       "mcp__canvas-mtgibbs__get_unsubmitted_past_due",
       "mcp__canvas-mtgibbs__get_students",
-      "mcp__google-workspace__get_drive_file_download_url"
+      "mcp__google-workspace__get_drive_file_download_url",
+      "Bash(python C:codegithubjrolstadrolstad-home-skills.claudeskillsmorning-reportextract_docx_text.py 'C:\\\\Users\\\\jrols\\\\.workspace-mcp\\\\attachments\\\\Rolstad Family Meals_b1d97c8d.docx')"
     ]
   }
 }

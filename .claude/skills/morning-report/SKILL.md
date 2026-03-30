@@ -26,33 +26,11 @@ Simultaneously retrieve:
 - Check register balances via Google Sheets (`mcp__google-workspace__read_sheet_values`, `user_google_email: [google_email]`):
   - Primary joint checking: spreadsheet ID `[spreadsheet_id_1]`, range `I2`
   - Secondary checking: spreadsheet ID `[spreadsheet_id_2]`, range `I2`
-- Dinner meal plan for the next 7 days — use `mcp__google-workspace__get_drive_file_download_url` (`user_google_email: [google_email]`, `file_id: [meal_plan_doc_id]`, `export_format: docx`) to download the meal plan as a .docx file, then extract hyperlink display names and URLs from the docx XML using a Python script:
-  ```python
-  import zipfile, xml.etree.ElementTree as ET
-  ns = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'}
-  with zipfile.ZipFile('<local_path>') as z:
-      rels = {}
-      with z.open('word/_rels/document.xml.rels') as f:
-          for rel in ET.parse(f).getroot():
-              if rel.get('Type','').endswith('/hyperlink'):
-                  rels[rel.get('Id')] = rel.get('Target','')
-      with z.open('word/document.xml') as f:
-          body = ET.parse(f).getroot().find('.//w:body', ns)
-      for para in body.findall('.//w:p', ns):
-          parts = []
-          for elem in para:
-              tag = elem.tag.split('}')[-1]
-              if tag == 'r':
-                  t = elem.find('w:t', ns)
-                  if t is not None and t.text: parts.append(t.text)
-              elif tag == 'hyperlink':
-                  rid = elem.get('{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id','')
-                  text = ''.join(t.text or '' for t in elem.findall('.//w:t', ns))
-                  if text: parts.append(text)
-          line = ''.join(parts).strip()
-          if line: print(line)
+- Dinner meal plan for the next 7 days — use `mcp__google-workspace__get_drive_file_download_url` (`user_google_email: [google_email]`, `file_id: [meal_plan_doc_id]`, `export_format: docx`) to download the meal plan as a .docx file, then extract hyperlink display names and URLs from the docx XML by running:
   ```
-  This preserves linked recipe names as their display text. Find today's date, and show meals from today through the next 7 days (spanning into the next week's section if needed).
+  python extract_docx_text.py <local_path>
+  ```
+  (Script is at `.claude/skills/morning-report/extract_docx_text.py`.) This preserves linked recipe names as their display text. Find today's date, and show meals from today through the next 7 days (spanning into the next week's section if needed).
 - Google Calendar events for the next 7 days (`mcp__google-workspace__get_events`, `user_google_email: [google_email]`, `calendar_id: primary`, `time_min`: today, `time_max`: 7 days from today, `max_results: 50`, `detailed: true`) — detailed mode is required to get the organizer field for Vrbas categorization
 - Gmail inbox (`user_google_email: [google_email]`):
   1. Search unread: `mcp__google-workspace__search_gmail_messages` with query `is:unread in:inbox`, `page_size: 20`
