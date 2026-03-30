@@ -26,7 +26,11 @@
       "mcp__google-workspace__search_gmail_messages",
       "mcp__google-workspace__get_gmail_messages_content_batch",
       "mcp__google-workspace__get_events",
-      "mcp__google-workspace__get_doc_content"
+      "mcp__google-workspace__get_doc_content",
+      "mcp__canvas-mtgibbs__get_missing_assignments",
+      "mcp__canvas-mtgibbs__get_unsubmitted_past_due",
+      "mcp__canvas-mtgibbs__get_students",
+      "mcp__google-workspace__get_drive_file_download_url"
     ]
   }
 }
