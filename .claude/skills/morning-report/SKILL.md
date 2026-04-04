@@ -15,29 +15,35 @@ Get a combined start-of-day overview: account balances, recent financial activit
 
 ## Steps
 
-### 1. Fetch All Data in Parallel
+### 1. Fetch All Data in Two Parallel Waves
 
-Simultaneously retrieve:
-- BECU accounts and balances (`mcp__becu__get_accounts`, `mcp__becu__get_balance`)
-- Heritage Bank NW accounts and balances (`mcp__heritagebanknw__get_accounts`, `mcp__heritagebanknw__get_balance`)
-- USPS mail pieces (`mcp__usps__get_mail_pieces`) — filter to last 3 days
-- USPS packages (`mcp__usps__get_packages`) — only show packages with an estimated delivery date on or after today, or with a non-delivered status. Filter out packages that have already been delivered.
-- Weather forecast: follow the same steps as the `/weather-check` skill
-- Check register balances via Google Sheets (`mcp__google-workspace__read_sheet_values`, `user_google_email: [google_email]`):
-  - Primary joint checking: spreadsheet ID `[spreadsheet_id_1]`, range `I2`
-  - Secondary checking: spreadsheet ID `[spreadsheet_id_2]`, range `I2`
-- Dinner meal plan for the next 7 days — use `mcp__google-workspace__get_drive_file_download_url` (`user_google_email: [google_email]`, `file_id: [meal_plan_doc_id]`, `export_format: docx`) to download the meal plan as a .docx file, then extract hyperlink display names and URLs from the docx XML by running:
-  ```
-  python extract_docx_text.py <local_path>
-  ```
-  (Script is at `.claude/skills/morning-report/extract_docx_text.py`.) This preserves linked recipe names as their display text. Find today's date, and show meals from today through the next 7 days (spanning into the next week's section if needed).
-- Google Calendar events for the next 7 days (`mcp__google-workspace__get_events`, `user_google_email: [google_email]`, `calendar_id: primary`, `time_min`: today, `time_max`: 7 days from today, `max_results: 50`, `detailed: true`) — detailed mode is required to get the organizer field for Vrbas categorization
-- Gmail inbox (`user_google_email: [google_email]`):
-  1. Search unread: `mcp__google-workspace__search_gmail_messages` with query `is:unread in:inbox`, `page_size: 20`
-  2. Search recent read: `mcp__google-workspace__search_gmail_messages` with query `is:read in:inbox`, `page_size: 10`
-  3. Batch-fetch metadata for all returned message IDs using `mcp__google-workspace__get_gmail_messages_content_batch` with `format: metadata`
+Data is fetched in two waves to maximize parallelism. Within each wave, fire all tool calls simultaneously in a single message — do not wait for one call to finish before starting the next.
 
-Also fetch recent transactions (last 24 hours) from both banks, and fetch images for all mail pieces in parallel using `mcp__usps__get_mail_piece_image`.
+#### Wave 1 — No dependencies (all calls at once)
+
+Send all of the following as one parallel batch:
+
+- `mcp__becu__get_accounts` — needed to get checking account index for Wave 2
+- `mcp__heritagebanknw__get_accounts` — needed to get checking account ID for Wave 2
+- `mcp__usps__get_mail_pieces` — filter results to last 3 days; piece IDs needed for Wave 2
+- `mcp__usps__get_packages` — filter to non-delivered or estimated delivery ≥ today
+- `mcp__google-workspace__read_sheet_values` (`spreadsheet_id: [spreadsheet_id_1]`, `range_name: I2`, `user_google_email: [google_email]`) — Josh & Bethany check register
+- `mcp__google-workspace__read_sheet_values` (`spreadsheet_id: [spreadsheet_id_2]`, `range_name: I2`, `user_google_email: [google_email]`) — Vrbas check register
+- `mcp__google-workspace__get_drive_file_download_url` (`file_id: [meal_plan_doc_id]`, `export_format: docx`, `user_google_email: [google_email]`) — downloads meal plan; local path needed for Wave 2
+- `mcp__google-workspace__get_events` (`calendar_id: primary`, `time_min`: today, `time_max`: 7 days from today, `max_results: 50`, `detailed: true`, `user_google_email: [google_email]`)
+- `mcp__google-workspace__search_gmail_messages` (`query: is:unread in:inbox`, `page_size: 20`, `user_google_email: [google_email]`) — message IDs needed for Wave 2
+- `mcp__google-workspace__search_gmail_messages` (`query: is:read in:inbox`, `page_size: 10`, `user_google_email: [google_email]`) — message IDs needed for Wave 2
+- `WebFetch` of `https://api.weather.gov/gridpoints/SEW/128,76/forecast` — 3-day NWS forecast for Brier, WA
+
+#### Wave 2 — Depends on Wave 1 results (all calls at once)
+
+Once Wave 1 completes, send all of the following as one parallel batch:
+
+- `mcp__becu__get_transactions` (`account_index`: checking account index from Wave 1, `days: 1`)
+- `mcp__heritagebanknw__get_transactions` (`account_id`: checking account ID from Wave 1, `days: 1`)
+- `mcp__usps__get_mail_piece_image` (`piece_id`: ...) — one call per mail piece from Wave 1 (last 3 days only)
+- `mcp__google-workspace__get_gmail_messages_content_batch` (`message_ids`: all IDs from both Gmail searches in Wave 1, `format: metadata`, `user_google_email: [google_email]`)
+- `Bash` to extract meal plan text: `python extract_docx_text.py <local_path>` using the path returned in Wave 1. Script is at `.claude/skills/morning-report/extract_docx_text.py`. Find today's date in the output, and show meals from today through the next 7 days (spanning into the next week's section if needed).
 
 ### 2. Generate Combined Report
 

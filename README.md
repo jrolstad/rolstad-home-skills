@@ -10,6 +10,7 @@ Custom Claude Code skills for home use.
 | `/mail-check` | Incoming USPS mail pieces and packages |
 | `/morning-report` | Combined daily home status: finances, mail, and weather |
 | `/weather-check` | 3-day NWS forecast and forecast discussion for Brier, WA |
+| `/hawk-highlighter` | Diff the two most recent MTHS Hawk Highlights newsletters and surface what's new or changed |
 
 ## Setup
 
@@ -36,6 +37,7 @@ done
 | `becu` | finance-check, morning-report |
 | `heritagebanknw` | finance-check, morning-report |
 | `usps` | mail-check, morning-report |
+| `google-workspace` | hawk-highlighter |
 
 ## Repository Structure
 
@@ -44,7 +46,8 @@ done
   skills/
     finance-check/        # /finance-check skill
     mail-check/           # /mail-check skill
-    morning-report/   # /morning-report skill
+    morning-report/       # /morning-report skill
+    hawk-highlighter/     # /hawk-highlighter skill
 CLAUDE.md                 # Project context for Claude
 README.md                 # This file
 ```

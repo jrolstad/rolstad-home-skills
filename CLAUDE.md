@@ -10,6 +10,7 @@ This repository contains custom Claude Code skills for home use. Skills are stor
 | `/mail-check` | "check mail", "any packages", "what's in the mail" | Overview of incoming USPS mail pieces and packages |
 | `/morning-report` | "morning check", "home status" | Combined daily home status: finances, mail, and weather |
 | `/weather-check` | "what's the weather", "will it rain", "forecast" | 3-day NWS forecast and forecast discussion for Brier, WA |
+| `/hawk-highlighter` | "hawk highlights", "what's new in hawk highlights" | Diff the two most recent Hawk Highlights emails and surface what changed |
 
 ## MCP Servers Required
 
