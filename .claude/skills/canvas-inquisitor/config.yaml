@@ -5,3 +5,9 @@ excluded_course_keywords:
   - "[Archive]"
   - LIBRARY
   - "SOC331"
+
+sender_email: jrolstad@gmail.com
+
+recipients:
+  - rolstmac000@edmonds15.org
+  - bvrbas@gmail.com

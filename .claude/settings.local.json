@@ -34,7 +34,8 @@
       "Bash(python C:codegithubjrolstadrolstad-home-skills.claudeskillsmorning-reportextract_docx_text.py 'C:\\\\Users\\\\jrols\\\\.workspace-mcp\\\\attachments\\\\Rolstad Family Meals_b1d97c8d.docx')",
       "mcp__canvas-mtgibbs__get_all_students_status",
       "mcp__canvas-mtgibbs__get_recent_grades",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "mcp__google-workspace__send_gmail_message"
     ]
   }
 }

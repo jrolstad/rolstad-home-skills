@@ -4,18 +4,11 @@
 
 ### 👤 [Student Name]
 
+**Summary:** [2–3 sentence overview: overall grade picture, 🟢/🔴 trends with context, anything actionable]
+
 #### 📊 Current Grades
-| Course | Grade | Trend |
-|--------|-------|-------|
-| [Course Name] | [Score]% | [🟢 +X.X / 🔴 -X.X / ⚪ ±X.X] |
-
-#### ⚠️ Missing / Unsubmitted
-- [Assignment] — [Course] (due [Date])
-
-#### 📉 Recent Low Grades (last 14 days)
-- [Assignment]: [Score]/[Points] ([Percentage]%) — [Course]
-
-#### 📅 Due This Week
-- [Assignment] — [Course] (due [Day, Date])
+| Course | Grade | Trend | Missing | Low Grades |
+|--------|-------|-------|---------|------------|
+| [Course Name] | [Score]% | [🟢 / 🔴 / ⚪] | [count or —] | [count or —] |
 
 ---
