@@ -10,7 +10,7 @@ Tailor, validate, and generate resumes and cover letters targeted to specific jo
 
 ## Prerequisites
 
-- Google Workspace MCP server must be running
+- claude.ai Google Drive MCP connector must be active
 - User provides a job description or job posting URL (copy/paste or link)
 - Resume source: Google Drive folder `0B4BtZJ4ZrcRca05TbWxOWWd1SU0`
 
@@ -41,13 +41,10 @@ Extract and document:
 
 ### Step 2 — Fetch Existing Resumes from Google Drive
 
-Call `mcp__google-workspace__search_drive_files` with:
+Call `mcp__claude_ai_Google_Drive__search_files` with:
 - `query`: `'0B4BtZJ4ZrcRca05TbWxOWWd1SU0' in parents`
-- `user_google_email`: jrolstad@gmail.com
 
-List all files found. For each file, read content based on type:
-- **Google Doc**: call `mcp__google-workspace__get_doc_content` using the file ID
-- **Word (.docx) or PDF**: call `mcp__google-workspace__get_drive_file_download_url` with `export_format: docx` or `pdf`, then read the downloaded file
+List all files found. For each file, read its content by calling `mcp__claude_ai_Google_Drive__read_file_content` with the file ID. This handles Google Docs, .docx, and PDF natively — no branching needed.
 
 If multiple resume versions exist, present the list to the user and ask which to use as the base. Default to the most recently modified file.
 
@@ -128,8 +125,7 @@ Resume draft complete. What would you like to do next?
 Handle each choice and loop back to this menu after each action. Continue until the user says "done" or selects option 7.
 
 **Saving to Google Drive:**
-- Call `mcp__google-workspace__create_doc` with title `Resume — [Role Title] — [Company] — [YYYY-MM-DD]`
-- Place it in the resume folder: parent `0B4BtZJ4ZrcRca05TbWxOWWd1SU0`
+- Call `mcp__claude_ai_Google_Drive__create_file` with `title: Resume — [Role Title] — [Company] — [YYYY-MM-DD]`, `mimeType: text/plain`, `parentId: 0B4BtZJ4ZrcRca05TbWxOWWd1SU0`, and `content` as the resume text base64-encoded (converts automatically to a Google Doc)
 - Confirm the link after creation
 
 ---
@@ -144,7 +140,7 @@ Same as Build Step 1.
 
 ### Step 2 — List Resumes
 
-Fetch all files from the Drive folder (same as Build Step 2). Present the list and ask which resume(s) to validate. Accept "all" to validate every file.
+Fetch all files from the Drive folder using `mcp__claude_ai_Google_Drive__search_files` (same as Build Step 2). Present the list and ask which resume(s) to validate. Accept "all" to validate every file.
 
 ### Step 3 — Score Each Resume
 
@@ -214,8 +210,7 @@ Cover letter draft complete. What would you like to do next?
 ```
 
 **Saving to Google Drive:**
-- Call `mcp__google-workspace__create_doc` with title `Cover Letter — [Role Title] — [Company] — [YYYY-MM-DD]`
-- Place in the same resume folder
+- Call `mcp__claude_ai_Google_Drive__create_file` with `title: Cover Letter — [Role Title] — [Company] — [YYYY-MM-DD]`, `mimeType: text/plain`, `parentId: 0B4BtZJ4ZrcRca05TbWxOWWd1SU0`, and `content` as the cover letter text base64-encoded (converts automatically to a Google Doc)
 - Confirm the link after creation
 
 ---
