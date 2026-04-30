@@ -10,7 +10,7 @@ Get a grouped, themed overview of calendar events for the next 7 days.
 
 ## Prerequisites
 
-- Google Workspace MCP server must be running
+- claude.ai Google Calendar MCP connector must be active
 
 ## Steps
 
@@ -19,13 +19,12 @@ Get a grouped, themed overview of calendar events for the next 7 days.
 Call:
 
 ```
-mcp__google-workspace__get_events(
-  calendar_id: primary,
-  time_min: today,
-  time_max: 7 days from today,
-  max_results: 50,
-  detailed: true,
-  user_google_email: jrolstad@gmail.com
+mcp__claude_ai_Google_Calendar__list_events(
+  startTime: today at 00:00:00 local time (ISO 8601),
+  endTime: 7 days from today at 23:59:59 local time (ISO 8601),
+  pageSize: 50,
+  orderBy: startTime,
+  timeZone: America/Los_Angeles
 )
 ```
 
@@ -63,4 +62,4 @@ Would you like me to:
 ## Notes
 
 - Pairs with `/morning-report` for a full daily briefing
-- To create or modify events, use the Google Workspace tools directly
+- To create or modify events, use the claude.ai Google Calendar MCP tools directly
