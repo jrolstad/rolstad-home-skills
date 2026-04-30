@@ -9,20 +9,16 @@ Get a themed overview of recent Gmail inbox messages.
 
 ## Prerequisites
 
-- Google Workspace MCP server must be running
+- claude.ai Gmail MCP connector must be active
 
 ## Steps
 
-### 1. Fetch Messages in Two Waves
+### 1. Fetch Threads (both calls in parallel)
 
-#### Wave 1 (all at once)
+- `mcp__claude_ai_Gmail__search_threads` (`query: "is:unread in:inbox"`, `pageSize: 20`)
+- `mcp__claude_ai_Gmail__search_threads` (`query: "is:read in:inbox"`, `pageSize: 10`)
 
-- `mcp__google-workspace__search_gmail_messages` (`query: is:unread in:inbox`, `page_size: 20`, `user_google_email: jrolstad@gmail.com`)
-- `mcp__google-workspace__search_gmail_messages` (`query: is:read in:inbox`, `page_size: 10`, `user_google_email: jrolstad@gmail.com`)
-
-#### Wave 2 (after Wave 1)
-
-- `mcp__google-workspace__get_gmail_messages_content_batch` (`message_ids`: all IDs from both searches combined, `format: metadata`, `user_google_email: jrolstad@gmail.com`)
+Each result includes subject, sender, recipients, and a message snippet — no second wave needed.
 
 ### 2. Generate Inbox Report
 
@@ -53,4 +49,4 @@ Would you like me to:
 ## Notes
 
 - Pairs with `/morning-report` for a full daily briefing
-- To send email, use the Google Workspace tools directly
+- To send email, use the claude.ai Gmail MCP tools directly
