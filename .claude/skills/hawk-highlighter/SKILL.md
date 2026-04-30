@@ -20,7 +20,7 @@ Search Gmail for all threads matching the subject:
 
 ```
 mcp__claude_ai_Gmail__search_threads(
-  query: 'subject:"Hawk Highlights"',
+  query: '"Hawk Highlights" in:anywhere',
   pageSize: 20
 )
 ```
