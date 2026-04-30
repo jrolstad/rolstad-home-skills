@@ -9,21 +9,16 @@ Get the weekly dinner plan from Google Drive.
 
 ## Prerequisites
 
-- Google Workspace MCP server must be running
+- claude.ai Google Drive MCP connector must be active
 
 ## Steps
 
-### 1. Download Meal Plan Document
+### 1. Read the Meal Plan Document
 
 Call:
-- `mcp__google-workspace__get_drive_file_download_url` (`file_id: [meal_plan_doc_id]`, `export_format: docx`, `user_google_email: jrolstad@gmail.com`)
+- `mcp__claude_ai_Google_Drive__read_file_content` (`fileId: 1ef1sAMVyfuG9ijvNDLRk7xxuLGkihPubqzS2mFTT2HE`)
 
-### 2. Extract Text
-
-Run:
-- `Bash`: `python .claude/skills/meal-check/extract_docx_text.py <local_path>` using the path returned in Step 1
-
-### 3. Generate Dinner Report
+### 2. Generate Dinner Report
 
 Find today's date in the extracted text. Show meals from today through the next 7 days, spanning into the next week's section if needed. Skip days with no meal listed.
 
@@ -37,7 +32,7 @@ Find today's date in the extracted text. Show meals from today through the next 
 | Tue Mar 31 | Burgers, Fries |
 ```
 
-### 4. Offer Follow-up Actions
+### 3. Offer Follow-Up Actions
 
 ```
 Would you like me to:
@@ -47,5 +42,5 @@ Would you like me to:
 
 ## Notes
 
-- Meal plan document is stored in Google Drive
+- Meal plan document is a Google Doc in Drive; `read_file_content` handles it natively — no export or script needed
 - Pairs with `/morning-report` for a full daily briefing
