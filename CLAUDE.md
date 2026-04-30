@@ -11,6 +11,7 @@ This repository contains custom Claude Code skills for home use. Skills are stor
 | `/morning-report` | "morning check", "home status" | Combined daily home status: finances, mail, and weather |
 | `/weather-check` | "what's the weather", "will it rain", "forecast" | 3-day NWS forecast and forecast discussion for Brier, WA |
 | `/hawk-highlighter` | "hawk highlights", "what's new in hawk highlights" | Diff the two most recent Hawk Highlights emails and surface what changed |
+| `/calendar-check` | "what's on my calendar", "what do I have this week", "any events coming up", "calendar check" | Upcoming calendar events for the next 7 days, grouped by theme |
 | `/canvas-inquisitor` | "canvas grades", "how are students doing", "missing assignments", "student grades" | Grade report for all observed students from Canvas LMS |
 | `/resume-builder` | "build a resume", "tailor my resume", "update resume for job", "validate resume", "write a cover letter" | Tailor a resume to a job posting, validate Drive resumes against a job description, or draft a targeted cover letter |
 

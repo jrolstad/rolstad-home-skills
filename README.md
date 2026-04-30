@@ -11,6 +11,7 @@ Custom Claude Code skills for home use.
 | `/morning-report` | Combined daily home status: finances, mail, and weather |
 | `/weather-check` | 3-day NWS forecast and forecast discussion for Brier, WA |
 | `/hawk-highlighter` | Diff the two most recent MTHS Hawk Highlights newsletters and surface what's new or changed |
+| `/calendar-check` | Upcoming calendar events for the next 7 days, grouped by theme |
 | `/canvas-inquisitor` | Grade report for all observed students: current grades, missing assignments, recent low grades, and upcoming work |
 | `/resume-builder` | Tailor a resume to a job posting, validate Drive resumes against a job description, or generate a targeted cover letter |
 
