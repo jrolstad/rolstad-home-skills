@@ -13,7 +13,6 @@ Fetch the academic status for all observed students and produce a structured gra
 
 Read `config.yaml` (in this skill's directory) to load:
 - `excluded_course_keywords` — course names containing any of these keywords are hidden from the Current Grades section
-- `sender_email` — use as `user_google_email` for Google Workspace tool calls
 - `recipients` — use for the send action in Step 4
 
 ### 1. Fetch All Observed Students
@@ -86,23 +85,21 @@ Would you like me to:
 
 **If the user chooses option 4:** Call `mcp__canvas-mtgibbs__get_recent_grades(student_id: ..., days: 30)` for each student and display full grade history.
 
-**If the user chooses option 5:** Send the grade report as an email to the recipients from `config.yaml` using:
+**If the user chooses option 5:** Create a Gmail draft for the recipients from `config.yaml` using:
 
 ```
-mcp__google-workspace__send_gmail_message(
-  to: recipients[0],
-  cc: recipients[1],
+mcp__claude_ai_Gmail__create_draft(
+  to: [recipients[0]],
+  cc: [recipients[1]],
   subject: "Canvas Inquisitor — [Date]",
-  body: "[full grade report as HTML]",
-  body_format: "html",
-  user_google_email: sender_email
+  htmlBody: "[full grade report as HTML]"
 )
 ```
 
-Construct the body as HTML so tables render correctly in Gmail:
+Construct `htmlBody` so tables render correctly in Gmail:
 - **Opening:** A single sentence in a `<p>` tag explaining what this is. Example: `<p>Canvas Inquisitor grade report for April 4, 2026.</p>`
 - **Summary:** The summary text in a `<p>` tag.
 - **Grades table:** An HTML `<table>` with a header row and one row per course. Use inline styles for borders and padding (e.g. `border: 1px solid #ddd; padding: 8px;`) since Gmail strips `<style>` blocks.
 - **Legend:** A `<p>` below the table explaining trend dots.
 
-Confirm to the user once the email has been sent.
+Confirm to the user once the draft has been created (they will need to review and send it from Gmail).

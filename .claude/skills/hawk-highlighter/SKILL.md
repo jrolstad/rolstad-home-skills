@@ -1,6 +1,6 @@
 ---
 name: hawk-highlighter
-description: Fetches all "Hawk Highlights" school newsletter emails from Gmail, selects the two most recent, and produces a diff report showing only what is new or changed. Use when the user asks about "hawk highlights", "what's new in hawk highlights", or "hawk highlighter". Do not use for comparing other emails, general Gmail search, or non-Hawk-Highlights newsletters. Requires the Google Workspace MCP server to be running.
+description: Fetches all "Hawk Highlights" school newsletter emails from Gmail, selects the two most recent, and produces a diff report showing only what is new or changed. Use when the user asks about "hawk highlights", "what's new in hawk highlights", or "hawk highlighter". Do not use for comparing other emails, general Gmail search, or non-Hawk-Highlights newsletters. Requires the claude.ai Gmail MCP connector to be active.
 ---
 
 # Hawk Highlighter
@@ -12,18 +12,16 @@ Fetch all Hawk Highlights emails, identify the two most recent issues, and repor
 ### 0. Load Config
 
 Read `config.yaml` (in this skill's directory) to load:
-- `sender_email` — use as `user_google_email` for all Google Workspace tool calls
 - `recipients` — use for the send action in Step 4
 
 ### 1. Search Gmail for All Hawk Highlights Emails
 
-Search Gmail for all emails matching the subject:
+Search Gmail for all threads matching the subject:
 
 ```
-mcp__google-workspace__search_gmail_messages(
+mcp__claude_ai_Gmail__search_threads(
   query: 'subject:"Hawk Highlights"',
-  page_size: 20,
-  user_google_email: sender_email
+  pageSize: 20
 )
 ```
 
@@ -33,19 +31,16 @@ mcp__google-workspace__search_gmail_messages(
 
 **If 2 or more emails are found:** Sort all results by received date descending (newest first). Take the top 2. Proceed to Step 2.
 
-### 2. Fetch Full Content of Both Emails
+### 2. Fetch Full Content of Both Threads
 
-Fetch the full body of both selected messages in a single batch call:
+Fetch the full body of each thread in parallel:
 
 ```
-mcp__google-workspace__get_gmail_messages_content_batch(
-  message_ids: [id_of_newest, id_of_second_newest],
-  format: "full",
-  user_google_email: sender_email
-)
+mcp__claude_ai_Gmail__get_thread(threadId: id_of_newest, messageFormat: FULL_CONTENT)
+mcp__claude_ai_Gmail__get_thread(threadId: id_of_second_newest, messageFormat: FULL_CONTENT)
 ```
 
-The message at index 0 is the current issue. The message at index 1 is the previous issue.
+The first result is the current issue. The second result is the previous issue.
 
 ### 3. Produce the Diff Report
 
@@ -69,15 +64,14 @@ Would you like me to:
 4. 🔍 Search for an older issue
 ```
 
-**If the user chooses option 1:** Send the diff report as an email to the recipients from `config.yaml` using:
+**If the user chooses option 1:** Create a Gmail draft for the recipients from `config.yaml` using:
 
 ```
-mcp__google-workspace__send_gmail_message(
-  to: recipients[0],
-  cc: recipients[1],
+mcp__claude_ai_Gmail__create_draft(
+  to: [recipients[0]],
+  cc: [recipients[1]],
   subject: "Hawk Highlighter — [Current Issue Date] vs [Previous Issue Date]",
-  body: "[intro sentence]\n\n[full diff report]",
-  user_google_email: sender_email
+  body: "[intro sentence]\n\n[full diff report]"
 )
 ```
 
@@ -85,4 +79,4 @@ Construct the body as follows:
 - **First line:** A single sentence explaining what Hawk Highlighter is and which issues are compared. Example: `Hawk Highlighter summarizes what's new and changed in the MTHS Hawk Highlights newsletter — below is a comparison of the Apr 5, 2026 issue (Week 32) vs the Mar 29, 2026 issue (Week 31).`
 - **Remainder:** The full diff report text (New This Week, Changed, Unchanged sections).
 
-Confirm to the user once the email has been sent.
+Confirm to the user once the draft has been created (they will need to review and send it from Gmail).
