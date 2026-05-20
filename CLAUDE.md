@@ -10,6 +10,7 @@ This repository contains custom Claude Code skills for home use. Skills are stor
 | `/mail-check` | "check mail", "any packages", "what's in the mail" | Overview of incoming USPS mail pieces and packages |
 | `/morning-report` | "morning check", "home status" | Combined daily home status: finances, mail, and weather |
 | `/weather-check` | "what's the weather", "will it rain", "forecast" | 3-day NWS forecast and forecast discussion for Brier, WA |
+| `/home-weather` | "home weather", "station report", "past 24 hours at home" | Observed conditions from the personal Ambient Weather station (default 24h, optional multi-day) |
 | `/hawk-highlighter` | "hawk highlights", "what's new in hawk highlights" | Diff the two most recent Hawk Highlights emails and surface what changed |
 | `/calendar-check` | "what's on my calendar", "what do I have this week", "any events coming up", "calendar check" | Upcoming calendar events for the next 7 days, grouped by theme |
 | `/canvas-inquisitor` | "canvas grades", "how are students doing", "missing assignments", "student grades" | Grade report for all observed students from Canvas LMS |
@@ -21,6 +22,7 @@ This repository contains custom Claude Code skills for home use. Skills are stor
 - **heritagebanknw** — Heritage Bank NW accounts
 - **usps** — USPS mail and package tracking
 - **canvas-mtgibbs** — Canvas LMS student grades and assignments
+- **ambient** — Ambient Weather personal station observations
 - **google-workspace** — Google Drive (resume storage) and Google Docs (output)
 
 ## Personal Configuration
