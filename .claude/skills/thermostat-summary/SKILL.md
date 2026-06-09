@@ -70,9 +70,11 @@ Load `assets/report-template.md` for the high-level structure. Build one **House
 
 #### Per-household section
 
-Lead with the household name and city.
+Lead with the household name and city. Branch on whether the household has any ecobee thermostats:
 
-**Outdoor line:** if at least one ecobee thermostat in the household reported `outdoor` stats, show the household-wide outdoor min/max/median (pool values across the household's ecobee thermostats). Skip if no ecobee data.
+##### Mixed (ecobee present) — historical table
+
+**Outdoor line:** if at least one ecobee thermostat in the household reported `outdoor` stats, show the household-wide outdoor min/max/median (pool values across the household's ecobee thermostats).
 
 **Member table** — one row per thermostat (and per remote sensor on those thermostats), plus one row per mysa device. Columns:
 
@@ -80,19 +82,37 @@ Lead with the household name and city.
 
 - **Ecobee thermostat (zone average)**: source = ecobee, sensor = "{thermostat name} (zone avg)", use `zone` stats.
 - **Ecobee remote sensor**: source = ecobee, sensor = sensor name. Use the `sensors` array. Include the on-thermostat sensor too (`Thermostat Temperature`).
-- **Mysa device**: source = mysa. Mysa has no history, so emit one row with Min/Max/Median **all set to the current reading** (converted from °C → °F: `°F = °C × 9/5 + 32`), and a footnote-style note under the table:
+- **Mysa device** (if present): source = mysa. Mysa has no history, so emit one row with Min/Max/Median **all set to the current reading** (converted from °C → °F: `°F = °C × 9/5 + 32`), and a footnote under the table:
   > *Mysa shows current reading only; the Mysa cloud doesn't expose historical data via REST. Min/max/median are the same value.*
   Use the device's `CorrectedTemp.v` (preferred) or `SensorTemp.v` from `get_current_state`. If neither is present or equals -1, mark as `n/a`.
 
-Sort within each household: thermostat zone rows first, then their remote sensors alphabetically, then mysa devices.
+Sort: thermostat zone rows first, then their remote sensors alphabetically, then mysa devices.
 
-**Range column** = max − min, one decimal. Bold the row with the widest range in each household — that's the room most affected by HVAC cycling or external conditions.
+**Range column** = max − min, one decimal. Bold the row with the widest range — that's the room most affected by HVAC cycling or external conditions.
 
 **Period footnote** after the table (small text): "Window: {first_ts} → {last_ts} ({intervals} 5-minute intervals)." Use the period from the first ecobee thermostat in the household.
 
+##### Mysa-only — current-state table
+
+If a household has **no ecobee thermostats** (mysa-only), the data is current-state only. Skip the outdoor line and skip the period footnote. Title the table `### Current` (an H3 subheading inside the household section). Use these columns:
+
+| Source | Sensor | Temp °F | Setpoint °F | Heating? |
+
+For each mysa device, fill from `get_current_state`:
+- `Temp °F` = `CorrectedTemp.v` (preferred) or `SensorTemp.v`, converted °C → °F.
+- `Setpoint °F` = `SetPoint.v`, converted °C → °F.
+- `Heating?` = "yes" if `Duty.v > 0`, "no" otherwise. Append `(duty 0)` style detail if useful.
+
+Add this footnote below the table:
+> *Mysa's cloud doesn't expose historical data via REST, so only the current reading is available.*
+
+##### Per-household summary line
+
+End every household section with a bold-led 1–2 sentence **Summary:** describing what's notable — what stood out, what looks normal, what's out of band. Reference specific numbers from this household's table only (don't bring in another household).
+
 #### Overall summary at the top
 
-Before the per-household sections, emit a one-line takeaway: which household ran cooler/warmer on average (compare median of zone averages across each household), and any sensor that stood out (widest range across all sensors).
+Before the per-household sections, emit a one-line takeaway: which household with historical data ran cooler/warmer on average (compare median of zone averages), and any sensor that stood out (widest range across all sensors with historical data). Mysa-only households are excluded from the comparison.
 
 ### 6. Offer Follow-up
 
