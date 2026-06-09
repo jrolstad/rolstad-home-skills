@@ -1,9 +1,9 @@
 ---
-name: temp-check
-description: Reports min/max/median temperatures over the past 24 hours for every thermostat and remote sensor across all households, grouped by household. Pulls historical data from the ecobee MCP server and current state from the mysa MCP server (mysa lacks history; current reading only). Use when the user asks "temp check", "temperature summary", "house temps", "how cold/hot has it been", or wants a 24-hour temperature breakdown across thermostats. Do not use for forecast (use /weather-check) or single-point queries (use the MCP tools directly).
+name: thermostat-summary
+description: Reports min/max/median temperatures over the past 24 hours for every thermostat and remote sensor across all households, grouped by household. Pulls historical data from the ecobee MCP server and current state from the mysa MCP server (mysa lacks history; current reading only). Use when the user asks "thermostat summary", "temperature summary", "house temps", "how cold/hot has it been", or wants a 24-hour temperature breakdown across thermostats. Do not use for forecast (use /weather-check) or single-point queries (use the MCP tools directly).
 ---
 
-# Temp Check
+# Thermostat Summary
 
 Summarize 24-hour temperature ranges for every ecobee thermostat + remote sensor and every mysa thermostat across all configured households.
 
