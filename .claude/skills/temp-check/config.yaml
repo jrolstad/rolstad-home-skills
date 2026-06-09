@@ -1,0 +1,13 @@
+households:
+  - name: Rolstad Home
+    city: Brier
+    ecobee_thermostat_ids:
+      - "511897079559"
+    mysa_device_ids: []
+
+  - name: Vrbas House
+    city: Mountlake Terrace
+    ecobee_thermostat_ids:
+      - "521753419432"
+    mysa_device_ids:
+      - "ec64c9259578"
