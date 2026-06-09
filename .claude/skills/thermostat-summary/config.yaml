@@ -11,7 +11,7 @@ households:
       - "521753419432"
     mysa_device_ids: []
 
-  - name: Vineyark Park
+  - name: Vineyard Park
     city: Mountlake Terrace
     ecobee_thermostat_ids: []
     mysa_device_ids:
