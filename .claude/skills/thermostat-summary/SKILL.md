@@ -1,11 +1,20 @@
 ---
 name: thermostat-summary
-description: Reports min/max/median temperatures over the past 24 hours for every thermostat and remote sensor across all households, grouped by household. Pulls historical data from the ecobee MCP server and current state from the mysa MCP server (mysa lacks history; current reading only). Use when the user asks "thermostat summary", "temperature summary", "house temps", "how cold/hot has it been", or wants a 24-hour temperature breakdown across thermostats. Do not use for forecast (use /weather-check) or single-point queries (use the MCP tools directly).
+description: Reports temperatures for every thermostat and remote sensor across all households, grouped by household. Two modes — the default "summary" mode reports min/max/median over the past 24 hours (ecobee history + mysa current); pass the "current" argument for a live current-conditions-only snapshot (temp, setpoint, heating). Use when the user asks "thermostat summary", "temperature summary", "house temps", "how cold/hot has it been" (summary), or "current temps", "what's it now", "thermostat now", "current conditions" (current). Do not use for forecast (use /weather-check) or single-point queries (use the MCP tools directly).
 ---
 
 # Thermostat Summary
 
-Summarize 24-hour temperature ranges for every ecobee thermostat + remote sensor and every mysa thermostat across all configured households.
+Report temperatures for every ecobee thermostat + remote sensor and every mysa thermostat across all configured households, in one of two modes.
+
+## Modes
+
+Select the mode from the skill argument:
+
+- **summary** (default — no argument, or any phrasing without an explicit "current"): 24-hour min/max/median ranges from ecobee history. Run steps 1, 2, 3, 4, then **5A**.
+- **current** (argument is `current`, or the user says "current temps", "what's it now", "thermostat now", "current conditions"): live snapshot only — no history, no spillover, no `summarize.py`. Run steps 1, 2, then **5B**. Skip steps 3 and 4 entirely.
+
+When the argument is absent and the phrasing is ambiguous, default to **summary** (preserves prior behavior).
 
 ## Steps
 
@@ -32,7 +41,7 @@ mcp__mysa__get_homes()
 
 `list_thermostats` / `get_devices` confirm the configured IDs still exist. Warn the user (but continue) about any configured ID not present in the live response. `get_current_state` keys by device ID. `get_homes` is used for the city label of any device whose home isn't already represented in config.
 
-### 3. Fetch Ecobee Runtime Reports (parallel)
+### 3. Fetch Ecobee Runtime Reports (parallel) — summary mode only
 
 For each unique ecobee thermostat ID across all configured households, call:
 
@@ -52,7 +61,7 @@ Each call will spillover (response is ~75K characters with one thermostat's sens
 
 If a thermostat is unreachable or returns no `reportList`, note the failure in the report and continue.
 
-### 4. Summarize Each Spillover
+### 4. Summarize Each Spillover — summary mode only
 
 For each spillover file, run:
 
@@ -64,7 +73,7 @@ python <skill-dir>/scripts/summarize.py <spillover-file-path>
 
 Each invocation prints a JSON object with `thermostatId`, `period`, `zone`, `outdoor`, and a `sensors` array. Capture them all.
 
-### 5. Render the Report
+### 5A. Render the Report — summary mode
 
 Load `assets/report-template.md` for the high-level structure. Build one **Household section** per household defined in config:
 
@@ -114,11 +123,58 @@ End every household section with a bold-led 1–2 sentence **Summary:** describi
 
 Before the per-household sections, emit a one-line takeaway: which household with historical data ran cooler/warmer on average (compare median of zone averages), and any sensor that stood out (widest range across all sensors with historical data). Mysa-only households are excluded from the comparison.
 
+### 5B. Render the Report — current mode
+
+Live snapshot only. **Do not** run steps 3 or 4. For each unique configured ecobee thermostat ID, call these in a single message:
+
+```
+mcp__ecobee__get_thermostat_status(thermostat_id=<id>)
+mcp__ecobee__get_sensors(thermostat_id=<id>)
+```
+
+Ecobee reports temperatures in tenths-of-a-degree-F (e.g. `723` == 72.3 °F) — divide by 10. Mysa data comes from the `get_current_state` call already made in step 2.
+
+Load `assets/report-template-current.md` for the high-level structure. Title the report `# Current Conditions — thermostats` and stamp it with the local time (`America/Los_Angeles`). Build one **Household section** per household in config (declaration order):
+
+#### Per-household section
+
+Lead with the household name and city. If `get_thermostat_status` exposes an outdoor/weather temperature for the household's thermostat, show a one-line `**Outdoor:** {temp}°F`; omit the line if unavailable. Then a single table — same columns for every household:
+
+| Source | Sensor | Temp °F | Setpoint °F | Heating? |
+
+Fill rows in this order:
+
+- **Ecobee thermostat (zone)**: source = ecobee, sensor = "{thermostat name} (zone avg)". `Temp °F` = current zone temp from `get_thermostat_status` (÷10). `Setpoint °F` = the active heat setpoint (÷10). `Heating?` = "yes" if the equipment status shows a heating stage running, else "no".
+- **Ecobee on-thermostat + remote sensors**: source = ecobee, sensor = sensor name (include `Thermostat Temperature`). `Temp °F` = sensor's current reading. Leave `Setpoint °F` and `Heating?` as `—` (zone-level properties, not per-sensor). Sort remote sensors alphabetically after the zone row.
+- **Mysa device** (if present): source = mysa, sensor = device/room name. `Temp °F` = `CorrectedTemp.v` (preferred) or `SensorTemp.v`, converted °C → °F (`°F = °C × 9/5 + 32`; mysa values are already in whole °C, not tenths). `Setpoint °F` = `SetPoint.v` (°C → °F). `Heating?` = "yes" if `Duty.v > 0` (append `(duty N)`), else "no". If temp is missing or -1, mark `n/a`.
+
+For a household with **no ecobee thermostats** (mysa-only), title the table `### Current` and add the footnote:
+> *Mysa's cloud doesn't expose historical data via REST, so only the current reading is available.*
+
+#### Per-household summary line
+
+End each household section with a bold-led **Summary:** — 1–2 sentences on what's notable right now (warmest/coolest room, anything calling for heat, anything out of band). Reference only this household's numbers.
+
+#### Overall summary at the top
+
+Before the per-household sections, one line: which household is currently warmest/coolest (compare zone temps) and any standout reading.
+
 ### 6. Offer Follow-up
+
+In **summary** mode:
 
 ```
 Would you like me to:
 1. 📈 Show a longer window (past week)
+2. 🔎 Drill into a specific room or thermostat
+3. 🌤️ Compare with outdoor weather (runs /home-weather)
+```
+
+In **current** mode:
+
+```
+Would you like me to:
+1. 📊 Show the 24-hour summary (min/max/median)
 2. 🔎 Drill into a specific room or thermostat
 3. 🌤️ Compare with outdoor weather (runs /home-weather)
 ```

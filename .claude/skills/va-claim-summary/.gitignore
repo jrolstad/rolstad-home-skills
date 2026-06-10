@@ -1,0 +1,5 @@
+# Sensitive: live VA.gov session cookie and fetched medical/PII JSON. Never commit.
+scripts/.chrome-profile/
+scripts/.chrome-cdp-profile/
+scripts/node_modules/
+output/

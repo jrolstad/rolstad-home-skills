@@ -1,0 +1,13 @@
+{
+  "name": "va-claim-summary-fetch",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Playwright fetcher for VA.gov claim/rating/appeal JSON (drives installed Chrome, user logs in interactively).",
+  "scripts": {
+    "fetch": "node fetch-va-data.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}
