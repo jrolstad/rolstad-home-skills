@@ -9,7 +9,7 @@ Report every item the user owns inside their own My Drive folder tree that carri
 
 ## How it works
 
-`scripts/drive_shares.py` lists every owned item once through the Drive API (about 1 call per 1,000 items), then treats a permission as direct when the item has it and its parent folder does not. Only those items get a full permission fetch. Known limit: a grantee whose role is raised on a child (reader on the folder, writer on a file inside it) is treated as inherited and not reported.
+`scripts/drive_shares.py` lists the user's folders, then the contents of every folder in their My Drive tree through batched Drive API requests (about a minute for 80k items), then treats a permission as direct when the item has it and its parent folder does not. Only those items get a full permission fetch. Known limit: a grantee whose role is raised on a child (reader on the folder, writer on a file inside it) is treated as inherited and not reported.
 
 Do not attempt this audit with the claude.ai Google Drive connector: it cannot filter for shared items and reads permissions one item per call.
 
