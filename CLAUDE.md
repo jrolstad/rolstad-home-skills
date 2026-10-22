@@ -16,6 +16,7 @@ This repository contains custom Claude Code skills for home use. Skills are stor
 | `/canvas-inquisitor` | "canvas grades", "how are students doing", "missing assignments", "student grades" | Grade report for all observed students from Canvas LMS |
 | `/resume-builder` | "build a resume", "tailor my resume", "update resume for job", "validate resume", "write a cover letter" | Tailor a resume to a job posting, validate Drive resumes against a job description, or draft a targeted cover letter |
 | `/thermostat-summary` | "thermostat summary", "house temps", "temperature summary", "how cold has it been" | Min/max/median temperatures over the past 24 hours for every thermostat and remote sensor, grouped by household |
+| `/drive-share-audit` | "what have I shared in Drive", "who has access to my Drive", "drive share audit", "drive shares by person" | Items in My Drive with direct (non-inherited) shares, as a full audit by item or one table per person; runs a local Drive API script that reuses the workspace-mcp OAuth client |
 
 ## MCP Servers Required
 

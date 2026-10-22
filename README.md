@@ -14,6 +14,7 @@ Custom Claude Code skills for home use.
 | `/calendar-check` | Upcoming calendar events for the next 7 days, grouped by theme |
 | `/canvas-inquisitor` | Grade report for all observed students: current grades, missing assignments, recent low grades, and upcoming work |
 | `/resume-builder` | Tailor a resume to a job posting, validate Drive resumes against a job description, or generate a targeted cover letter |
+| `/drive-share-audit` | Items in My Drive with direct (non-inherited) shares and who has access; needs `uv` and the `GOOGLE_OAUTH_CLIENT_ID`/`GOOGLE_OAUTH_CLIENT_SECRET` env vars |
 
 ## Setup
 
