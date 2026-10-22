@@ -1,2 +1,4 @@
 settings.md
 .claude/skills/drive-share-audit/output/
+__pycache__/
+.pytest_cache/
