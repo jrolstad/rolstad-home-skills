@@ -17,6 +17,7 @@ This repository contains custom Claude Code skills for home use. Skills are stor
 | `/resume-builder` | "build a resume", "tailor my resume", "update resume for job", "validate resume", "write a cover letter" | Tailor a resume to a job posting, validate Drive resumes against a job description, or draft a targeted cover letter |
 | `/thermostat-summary` | "thermostat summary", "house temps", "temperature summary", "how cold has it been" | Min/max/median temperatures over the past 24 hours for every thermostat and remote sensor, grouped by household |
 | `/drive-share-audit` | "what have I shared in Drive", "who has access to my Drive", "drive share audit", "drive shares by person" | Items in My Drive with direct (non-inherited) shares, as a full audit by item or one table per person; runs a local Drive API script that reuses the workspace-mcp OAuth client |
+| `/sleep-check` | "sleep check", "how did I sleep", "CPAP report", "myAir score", "sleep the last N nights" | CPAP therapy from ResMed myAir: last night, recent nights or weekly rollups, averages, 4-hour compliance, and flagged nights; thresholds in `config.yaml` |
 
 ## MCP Servers Required
 
@@ -27,6 +28,7 @@ This repository contains custom Claude Code skills for home use. Skills are stor
 - **ambient** — Ambient Weather personal station observations
 - **ecobee** — Ecobee thermostat current state and 24-hour runtime/sensor history
 - **mysa** — Mysa thermostat current state (no history available)
+- **myair** — ResMed myAir CPAP nightly therapy records (local stdio only)
 - **google-workspace** — Google Drive (resume storage) and Google Docs (output)
 
 ## Personal Configuration

@@ -1,0 +1,26 @@
+# Thresholds for /sleep-check. scripts/summarize.py reads these on every run.
+# Flat "key: number" pairs only. Every key is required.
+
+# Used nights shorter than this are flagged.
+flag_min_usage_hours: 4
+
+# Nights with AHI (events/hour) above this are flagged.
+flag_max_ahi: 5
+
+# Nights with 95th-percentile leak above this (L/min) are flagged. 24 is ResMed's large-leak level.
+flag_max_leak_l_per_min: 24
+
+# A night counts toward compliance when usage is at least this many hours.
+compliance_min_hours: 4
+
+# Compliance percentage the report compares against (the usual insurance bar).
+compliance_target_pct: 70
+
+# Overview trend bands: the last 7 nights vs. the last 30. A change within the band
+# is "steady" (⚪). Beyond it, the change is "better" (🟢) or "worse" (🔴).
+# Higher is better for usage, score, and compliance. Lower is better for AHI and leak.
+trend_usage_minutes: 15
+trend_ahi: 0.5
+trend_leak_l_per_min: 2
+trend_score: 2
+trend_compliance_pct: 5
